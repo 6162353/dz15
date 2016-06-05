@@ -2,7 +2,11 @@
 
 //global $main;
 
-var_dump($main);
+//var_dump($main);
+
+include 'dz15_logic.php';
+
+/*
 
 if (isset($_GET["id"])) {
     
@@ -19,3 +23,6 @@ if (isset($_GET["id"])) {
     }
     
 }
+ * 
+ * 
+ */

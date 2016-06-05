@@ -297,7 +297,10 @@ class AdsStore {
     
     public function getAd($id) {
         
-        foreach ($this->ads as $value) {
+        var_dump($this->ads);
+        var_dump($id);
+        
+        /*foreach ($this->ads as $value) {
             
             if ($value->getId() == $id ) {
                 
@@ -305,7 +308,9 @@ class AdsStore {
                 
             }
             
-        }
+        } */
+        
+        return $this->ads[$id];
         
     }
     
@@ -391,8 +396,7 @@ class AdsStore {
     public function change_ad($id) {
         
         
-        global $_POST;
-        
+             
         $ad=self::getAd($id);
         
         // формируем данные объявления vars
@@ -432,7 +436,7 @@ class AdsStore {
         
         //var_dump($this->ads);
         
-        foreach ($this->ads as $object) {
+        /*foreach ($this->ads as $object) {
 
             if ($object->getId() == $id) {
                 
@@ -440,12 +444,22 @@ class AdsStore {
                 unset($object);
                 
             }
-        }
+        } 
+         
+         */
+        
+        $this->ads[$id]->delete($id);
         
         //var_dump($this->ads);
         
     }
-                
+    
+    /*public function show_ads() {
+        
+        var_dump ($this->ads);
+        
+    }
+        */        
     
         
     

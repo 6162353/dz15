@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/alina/dz15/dz15.php</file>
-            <file>file:/var/www/alina/dz15/dz15_ajax.php</file>
-            <file>file:/var/www/alina/dz15/main.js</file>
-            <file>file:/var/www/alina/dz15/smarty/templates/table_row.tpl.html</file>
-            <file>file:/var/www/alina/dz15/smarty/templates/table.tpl.html</file>
-            <file>file:/var/www/alina/dz15/smarty/templates/oop.tpl</file>
+            <file>file:/var/www/dz15/Ad.class.php</file>
+            <file>file:/var/www/dz15/smarty/templates/table.tpl.html</file>
+            <file>file:/var/www/dz15/smarty/templates/oop.tpl</file>
+            <file>file:/var/www/dz15/dz15_ajax.php</file>
+            <file>file:/var/www/dz15/dz15.php</file>
+            <file>file:/var/www/dz15/smarty/index.php</file>
+            <file>file:/var/www/dz15/main.js</file>
+            <file>file:/var/www/dz15/dz15_logic.php</file>
+            <file>file:/var/www/dz15/smarty/templates/table_row.tpl.html</file>
         </group>
     </open-files>
 </project-private>

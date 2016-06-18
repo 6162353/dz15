@@ -1,0 +1,4 @@
+site_dir=/dz15/
+current_php_script=dz15.php
+project_root=/var/www
+server_name=localhost

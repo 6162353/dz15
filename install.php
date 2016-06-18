@@ -7,12 +7,8 @@
  */
 
 $debug = 1;
+header('Content-type: text/html; charset=utf-8');
 
-if (0) {
-    echo '<p>PHP_OS=';
-    echo PHP_OS;
-    echo '</p>';
-}
 
 if (PHP_OS == 'WINNT') {
 
@@ -22,8 +18,33 @@ if (PHP_OS == 'WINNT') {
     $end_of_file = "\n";
 }
 
+    $config_h = fopen('config.txt', 'r');
+    $config = array();
 
-header('Content-type: text/html; charset=utf-8');
+    while ($config_row = fgetcsv($config_h, 0, '=')) {
+
+        $config[$config_row[0]] = $config_row[1];
+    }
+
+    if (0) {
+
+        echo 'var_dump(config)=' . var_dump($config);
+    }
+
+    $project_root = $config['project_root'];
+    $site_dir = $config['site_dir'];
+    $current_php_script = $config['current_php_script'];
+
+    if (0) {
+        echo '<br>$project_root=' . $project_root;
+        echo '<br>$site_dir=' . $site_dir;
+        echo '<br>$current_php_script=' . $current_php_script;
+    }
+
+    fclose($config_h);
+
+
+
 if (count($_POST)) {
 
     if (!$debug) {
@@ -157,7 +178,9 @@ if (count($_POST)) {
 
 
         exec('mysql --user=' . $user_name . ' --password=' . $password . ' --host=' . $server_name . ' ' . $database . ' < dz9.sql');
-        echo 'Дамп восстановлен. <a href="http://localhost/test/dz15.php">http://localhost/test/dz15.php</a>';
+        echo 'Дамп восстановлен. <a href="http://'.$server_name.
+                $site_dir.$current_php_script.'">http://'.
+                $server_name.$site_dir.$current_php_script.'</a>';
 
 
 

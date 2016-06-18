@@ -1,70 +1,119 @@
 <?php
 
-$project_root = $_SERVER['DOCUMENT_ROOT'];
 
-$debug_paths = 0; 
+if (PHP_OS == 'WINNT') {
 
-if ($debug_paths) {
-    echo 'project_root=' . $project_root;
+    $end_of_file = "\r\n";
+} else if (PHP_OS == 'Linux') {
+
+    $end_of_file = "\n";
 }
 
-$dir = __DIR__;
 
-if ($debug_paths) {
-    echo '<br>dir=' . $dir;
+if (file_exists('config.txt')) {
 
-    echo '<br>__FILE__=' . __FILE__;
-}
+    //считываем данные о подключении к бд из файла
+
+    $config_h = fopen('config.txt', 'r');
+    $config = array();
+
+    while ($config_row = fgetcsv($config_h, 0, '=')) {
+
+        $config[$config_row[0]] = $config_row[1];
+    }
+
+    if (0) {
+
+        echo 'var_dump(config)=' . var_dump($config);
+    }
+
+    $project_root = $config['project_root'];
+    $site_dir = $config['site_dir'];
+    $current_php_script = $config['current_php_script'];
+
+    if (0) {
+        echo '<br>$project_root=' . $project_root;
+        echo '<br>$site_dir=' . $site_dir;
+        echo '<br>$current_php_script=' . $current_php_script;
+    }
+
+    fclose($config_h);
+    
+} else {
+
+    $debug_paths = 1;
+    $project_root = $_SERVER['DOCUMENT_ROOT'];
+    $server_name = $_SERVER['SERVER_NAME'];
+
+    if ($debug_paths) {
+        echo 'project_root=' . $project_root;
+    }
+
+
+    $dir = __DIR__;
+
+    if ($debug_paths) {
+        echo '<br>dir=' . $dir;
+
+        echo '<br>__FILE__=' . __FILE__;
+    }
 
 //echo '<br>var_dump(strpbrk($dir,\)';
 //var_dump(strpbrk($project_root, '\\'));
 
-if (strpbrk($dir, '\\')) {
+    if (strpbrk($dir, '\\')) {
 
-    $project_root_a = explode('/', $project_root);
+        $project_root_a = explode('/', $project_root);
 
-    if ($debug_paths) {
-        echo '<br>var_dump($project_root_a=';
-        var_dump($project_root_a);
+        if ($debug_paths) {
+            echo '<br>var_dump($project_root_a=';
+            var_dump($project_root_a);
+        }
+
+        $project_root = implode('\\', $project_root_a);
     }
 
-    $project_root = implode('\\', $project_root_a);
-}
+    if ($debug_paths) {
+        echo '<br>project_root=' . $project_root;
+    }
 
-if ($debug_paths) {
-    echo '<br>project_root=' . $project_root;
-}
+    $site_path = str_replace($project_root, '', __FILE__);
 
-$site_path = str_replace($project_root, '', __FILE__);
+    if ($debug_paths) {
+        echo '<br>site_path=' . $site_path;
+    }
 
-if ($debug_paths) {
-    echo '<br>site_path=' . $site_path;
-}
+    $current_php_script = basename($site_path);
 
-$current_php_script = basename($site_path);
+    $site_dir = str_replace($current_php_script, '', $site_path);
 
-$site_dir = str_replace( $current_php_script, '', $site_path);
+    if ($debug_paths) {
+        echo '<br>site_dir=' . $site_dir;
+    }
 
-if ($debug_paths) {
-    echo '<br>site_dir=' . $site_dir;
-}
-
-$current_php_script = basename($site_path, '_logic.php') . '.php';
+    $current_php_script = basename($site_path, '_logic.php') . '.php';
 
 
-if ($debug_paths) {
-    echo '<br>current_php_script=' . $current_php_script;
+    if ($debug_paths) {
+        echo '<br>current_php_script=' . $current_php_script;
+    }
+
+    $config_h = fopen('config.txt', 'w');
+    fwrite($config_h, 'site_dir=' . $site_dir . $end_of_file);
+    fwrite($config_h, 'current_php_script=' . $current_php_script . $end_of_file);
+    fwrite($config_h, 'project_root=' . $project_root . $end_of_file);
+    fwrite($config_h, 'server_name=' . $server_name . $end_of_file);
+    fclose($config_h);
 }
 
 //echo $current_php_script;
 
-
 $smarty_dir = $project_root . $site_dir . 'smarty/';
 
-require_once $project_root . $site_dir .'dbsimple/lib/config.php';
-require_once $project_root . $site_dir .'dbsimple/lib/DbSimple/Generic.php';
+require_once $project_root . $site_dir . 'dbsimple/lib/config.php';
+require_once $project_root . $site_dir . 'dbsimple/lib/DbSimple/Generic.php';
 
-require_once $project_root . $site_dir .'FirePHPCore/FirePHP.class.php';
+require_once $project_root . $site_dir . 'FirePHPCore/FirePHP.class.php';
 
 require_once 'Ad.class.php';
 require_once 'functions.php';
@@ -96,47 +145,41 @@ if (file_exists('data.txt')) {
 //считываем данные о подключении к бд из файла
 
     $data_h = fopen('data.txt', 'r');
-    $data = array ();
-    
+    $data = array();
+
     while ($data_row = fgetcsv($data_h, 0, '=')) {
-        
+
         $data[$data_row[0]] = $data_row[1];
-        
     }
-    
+
     if (0) {
-        
+
         echo 'var_dump(data)=' . var_dump($data);
-        
     }
-    
+
     $db_user = $data['user_name'];
     $db_pass = $data['password'];
     $db_name = $data['database'];
     $db_server = $data['server_name'];
-    
+
     if (0) {
         echo '<br>$db_user=' . $db_user;
         echo '<br>$db_user=' . $db_pass;
         echo '<br>$db_user=' . $db_name;
         echo '<br>$db_user=' . $db_server;
-        
     }
-    
-    fclose($data_h);
-    
-    
-    } else {
-        
-        header('Location:install.php'); 
 
+    fclose($data_h);
+} else {
+
+    header('Location:' . $site_dir . 'install.php');
 }
 
 
 $values_for_form = array('title' => '', 'price' => '0',
-        'seller_name' => '', 'email' => '', 'phone' => '',
-        'description' => '', 'location_id' => '641780', 'metro_id' => '',
-        'category_id' => '', 'private' => '', 'allow_mails' => '',
+    'seller_name' => '', 'email' => '', 'phone' => '',
+    'description' => '', 'location_id' => '641780', 'metro_id' => '',
+    'category_id' => '', 'private' => '', 'allow_mails' => '',
     'checkedPrivate' => 'checked', 'checkedCompany' => '',
     'post_edit' => '0');
 
@@ -179,7 +222,6 @@ getCategories();
 
 
 // если гет заполнен, значит запросили изменение (в ходе просмотра) и удаление
-
 //global $main;
 
 
@@ -190,83 +232,66 @@ $main->writeOutAll();
 
 
 
-    if ($_POST['form'] == "Сохранить объявление") {
+if ($_POST['form'] == "Сохранить объявление") {
 // сохранить элемент
 // записать изменение в базу
+    //$temp_array = $Ads1->change_ad($db, $_POST, $_GET["id"]);
+    //$firePHP->log($temp_array, 'ads $temp_array');
 
+    $main->change_Ad($_GET['id']);
 
-        //$temp_array = $Ads1->change_ad($db, $_POST, $_GET["id"]);
+    //var_dump($_GET);
+    header('Location:' . $site_dir . $current_php_script);
+}
 
-        //$firePHP->log($temp_array, 'ads $temp_array');
+if ($_POST['form'] == "Назад") {
 
-        $main->change_Ad($_GET['id']);
-
-        //var_dump($_GET);
-        header('Location:' . $site_dir . $current_php_script);
-    }
-    
-    if ($_POST['form'] == "Назад") {
-
-        header('Location:' . $site_dir . $current_php_script);
-    }
+    header('Location:' . $site_dir . $current_php_script);
+}
 
 
 
 
 
 if (isset($_GET["id"])) {
-    
+
     if (isset($_GET["del"])) {
 
         $main->delete_ad($_GET["id"]);
 
 
         //$firePHP->log($temp_array, 'ads $temp_array');
-
-
         //header('Location:' . $site_dir . $current_php_script);
     }
-    
+
     if (isset($_GET["edit"])) {
 
-        
+
         $main->writeOutOne($_GET['id']);
         //$post_edit = 1;
-        
         //$ad->edit($_GET['id']);
-        
-        
     }
-    
-    
-}
-
-elseif (count($_POST)) {
+} elseif (count($_POST)) {
     if (isset($_POST['main_form'])) {
         if ($_POST['main_form'] == 'Добавить') {
-            
-        $ad=new BasicAd($_POST);
 
-    
-        $ad->save();
-        //var_dump($ad);
+            $ad = new BasicAd($_POST);
+
+
+            $ad->save();
+            //var_dump($ad);
         }
-        
-        
-       
-     }
-    $main->getAllAdsFromDb(); 
-    $main->writeOutAll(); 
-     
+    }
+    $main->getAllAdsFromDb();
+    $main->writeOutAll();
 }
 
-
 function getCity() {
-    
+
     global $db;
     global $cities;
     global $firePHP;
-    
+
     /* ГОРОД */
 
     $result = $db->select('select * from cities order by id ASC');
@@ -280,10 +305,8 @@ function getCity() {
     $firePHP->log($cities, '$cities');
 }
 
-
-
 function getMetro() {
-    
+
     global $db;
     global $tube_stations;
     global $firePHP;
@@ -303,8 +326,8 @@ function getMetro() {
 }
 
 function getCategories() {
-    
-        global $db;
+
+    global $db;
     global $categories;
     global $firePHP;
 
@@ -328,11 +351,6 @@ function getCategories() {
 
     $firePHP->log($categories, '$categories');
 }
-
-
-
-
-
 ?>
 
 

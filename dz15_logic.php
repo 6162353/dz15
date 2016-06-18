@@ -2,15 +2,60 @@
 
 $project_root = $_SERVER['DOCUMENT_ROOT'];
 
-$place = __DIR__;
+$debug_paths = 0; 
 
-$site_path = str_replace( $project_root, '', __FILE__);
+if ($debug_paths) {
+    echo 'project_root=' . $project_root;
+}
+
+$dir = __DIR__;
+
+if ($debug_paths) {
+    echo '<br>dir=' . $dir;
+
+    echo '<br>__FILE__=' . __FILE__;
+}
+
+//echo '<br>var_dump(strpbrk($dir,\)';
+//var_dump(strpbrk($project_root, '\\'));
+
+if (strpbrk($dir, '\\')) {
+
+    $project_root_a = explode('/', $project_root);
+
+    if ($debug_paths) {
+        echo '<br>var_dump($project_root_a=';
+        var_dump($project_root_a);
+    }
+
+    $project_root = implode('\\', $project_root_a);
+}
+
+if ($debug_paths) {
+    echo '<br>project_root=' . $project_root;
+}
+
+$site_path = str_replace($project_root, '', __FILE__);
+
+if ($debug_paths) {
+    echo '<br>site_path=' . $site_path;
+}
 
 $current_php_script = basename($site_path);
 
 $site_dir = str_replace( $current_php_script, '', $site_path);
 
+if ($debug_paths) {
+    echo '<br>site_dir=' . $site_dir;
+}
+
 $current_php_script = basename($site_path, '_logic.php') . '.php';
+
+
+if ($debug_paths) {
+    echo '<br>current_php_script=' . $current_php_script;
+}
+
 //echo $current_php_script;
 
 
@@ -46,7 +91,46 @@ $smarty->config_dir = $smarty_dir . 'configs';
 
 header('Content-type: text/html; charset=utf-8');
 
+if (file_exists('data.txt')) {
 
+//считываем данные о подключении к бд из файла
+
+    $data_h = fopen('data.txt', 'r');
+    $data = array ();
+    
+    while ($data_row = fgetcsv($data_h, 0, '=')) {
+        
+        $data[$data_row[0]] = $data_row[1];
+        
+    }
+    
+    if (0) {
+        
+        echo 'var_dump(data)=' . var_dump($data);
+        
+    }
+    
+    $db_user = $data['user_name'];
+    $db_pass = $data['password'];
+    $db_name = $data['database'];
+    $db_server = $data['server_name'];
+    
+    if (0) {
+        echo '<br>$db_user=' . $db_user;
+        echo '<br>$db_user=' . $db_pass;
+        echo '<br>$db_user=' . $db_name;
+        echo '<br>$db_user=' . $db_server;
+        
+    }
+    
+    fclose($data_h);
+    
+    
+    } else {
+        
+        header('Location:install.php'); 
+
+}
 
 
 $values_for_form = array('title' => '', 'price' => '0',
@@ -75,10 +159,10 @@ $categories = array();
 $amount_ads = 0;
 
 
-$db_user = 'dz9';
-$db_pass = 'dz9';
-$db_name = 'dz9';
-$db_server = 'localhost';
+//$db_user = 'dz9';
+//$db_pass = 'dz9';
+//$db_name = 'dz9';
+//$db_server = 'localhost';
 
 $db = DbSimple_Generic::connect('mysqli://' . $db_user . ':' . $db_pass . '@' . $db_server . '/' . $db_name);
 $db->setErrorHandler('databaseErrorHandler');

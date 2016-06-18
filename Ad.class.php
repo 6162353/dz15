@@ -297,8 +297,8 @@ class AdsStore {
     
     public function getAd($id) {
         
-        var_dump($this->ads);
-        var_dump($id);
+//        var_dump($this->ads);
+//        var_dump($id);
         
         /*foreach ($this->ads as $value) {
             

@@ -1,4 +1,4 @@
 server_name=localhost
 user_name=dz9
 database=dz9
-password=dz9
+password=

@@ -5,7 +5,7 @@
               <td>{$ad->getPrice()}</td>
               <td>
               
-              <a data-toggle="tooltip" title="Редактировать объявление" href={$site_dir}{$current_php_script}?edit=1&id={$ad->getId()}><span class='glyphicon glyphicon-edit'></span></a>
+              <a data-toggle="tooltip" title="Редактировать объявление" href=./{$current_php_script}?edit=1&id={$ad->getId()}><span class='glyphicon glyphicon-edit'></span></a>
               
               <a class="delete " data-toggle="tooltip" title="Удалить объявление" 
                  {*href={$site_dir}{$current_php_script}?del=1&id={$ad->getId()}*}

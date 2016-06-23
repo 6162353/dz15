@@ -246,10 +246,10 @@ class="vas-submit-input">
     
 {foreach from=$temp_array key=key5 item=value5} 
     
-<p><a href={$site_dir}{$current_php_script}?edit=1&id={$temp_array.$key5.id}>{$temp_array.$key5.title}</a> | 
+<p><a href=./{$current_php_script}?edit=1&id={$temp_array.$key5.id}>{$temp_array.$key5.title}</a> | 
         {$temp_array.$key5.price} | 
         {$temp_array.$key5.user_name} | 
-        <a href={$site_dir}{$current_php_script}?del=1&id={$temp_array.$key5.id}>Удалить</a></p>
+        <a href=./{$current_php_script}?del=1&id={$temp_array.$key5.id}>Удалить</a></p>
 {/foreach}
 {/if}   
 

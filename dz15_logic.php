@@ -1,6 +1,7 @@
 <?php
 
 
+
 if (PHP_OS == 'WINNT') {
 
     $end_of_file = "\r\n";
@@ -13,15 +14,9 @@ if (PHP_OS == 'WINNT') {
 if (file_exists('config.txt')) {
 
     //считываем данные о подключении к бд из файла
-
-    $config_h = fopen('config.txt', 'r');
-    $config = array();
-
-    while ($config_row = fgetcsv($config_h, 0, '=')) {
-
-        $config[$config_row[0]] = $config_row[1];
-    }
-
+    
+    $config = parse_ini_file('config.txt');
+    
     if (0) {
 
         echo 'var_dump(config)=' . var_dump($config);
@@ -37,11 +32,10 @@ if (file_exists('config.txt')) {
         echo '<br>$current_php_script=' . $current_php_script;
     }
 
-    fclose($config_h);
     
 } else {
 
-    $debug_paths = 1;
+    $debug_paths = 0;
     $project_root = $_SERVER['DOCUMENT_ROOT'];
     $server_name = $_SERVER['SERVER_NAME'];
 
@@ -172,7 +166,7 @@ if (file_exists('data.txt')) {
     fclose($data_h);
 } else {
 
-    header('Location:' . $site_dir . 'install.php');
+    header('Location:./install.php');
 }
 
 
@@ -241,12 +235,12 @@ if ($_POST['form'] == "Сохранить объявление") {
     $main->change_Ad($_GET['id']);
 
     //var_dump($_GET);
-    header('Location:' . $site_dir . $current_php_script);
+    header('Location:./'.$current_php_script);
 }
 
 if ($_POST['form'] == "Назад") {
 
-    header('Location:' . $site_dir . $current_php_script);
+    header('Location:./'.$current_php_script);
 }
 
 

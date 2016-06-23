@@ -18,30 +18,30 @@ if (PHP_OS == 'WINNT') {
     $end_of_file = "\n";
 }
 
-    $config_h = fopen('config.txt', 'r');
-    $config = array();
+$config_h = fopen('config.txt', 'r');
+$config = array();
 
-    while ($config_row = fgetcsv($config_h, 0, '=')) {
+while ($config_row = fgetcsv($config_h, 0, '=')) {
 
-        $config[$config_row[0]] = $config_row[1];
-    }
+    $config[$config_row[0]] = $config_row[1];
+}
 
-    if (0) {
+if (0) {
 
-        echo 'var_dump(config)=' . var_dump($config);
-    }
+    echo 'var_dump(config)=' . var_dump($config);
+}
 
-    $project_root = $config['project_root'];
-    $site_dir = $config['site_dir'];
-    $current_php_script = $config['current_php_script'];
+$project_root = $config['project_root'];
+$site_dir = $config['site_dir'];
+$current_php_script = $config['current_php_script'];
 
-    if (0) {
-        echo '<br>$project_root=' . $project_root;
-        echo '<br>$site_dir=' . $site_dir;
-        echo '<br>$current_php_script=' . $current_php_script;
-    }
+if (0) {
+    echo '<br>$project_root=' . $project_root;
+    echo '<br>$site_dir=' . $site_dir;
+    echo '<br>$current_php_script=' . $current_php_script;
+}
 
-    fclose($config_h);
+fclose($config_h);
 
 
 
@@ -66,29 +66,8 @@ if (count($_POST)) {
     fwrite($data_h, 'password=' . $password . $end_of_file);
     fclose($data_h);
 
-    // делание дампа моей БД
-
-    if ($server_name != '' and $user_name != '' and $database != '') {
-        $db_user = 'dz9';
-        $db_name = 'dz9';
-        $db_server = 'localhost';
-
-        if (PHP_OS == 'WINNT') {
-            
-            exec('C:\WebServers\usr\local\mysql-5.5\bin\mysql --user=' . 
-                    $user_name . ' --password=' . $password . ' --host=' . 
-                    $server_name . ' --database=' . $database . ' < dz9.sql', 
-                    $output, $return);
-
-        } else if (PHP_OS == 'Linux') {
-
-            exec('mysql --user=' . $user_name . ' --password=' . 
-                    $password . ' --host=' . $server_name . ' ' . 
-                    $database . ' < dz9.sql');
-
-        }
-
-//echo 'Дамп сделан';
+    if ($server_name != '' and $user_name != '' and $database != '') { 
+    
         // Очищение БД данной пользователем
 
         $conn = mysql_connect($server_name, $user_name, $password)
@@ -176,12 +155,37 @@ if (count($_POST)) {
 
         // Заливаем Базу Данных
 
+        if (PHP_OS == 'WINNT') {
 
-        exec('mysql --user=' . $user_name . ' --password=' . $password . ' --host=' . $server_name . ' ' . $database . ' < dz9.sql');
-        echo 'Дамп восстановлен. <a href="http://'.$server_name.
-                $site_dir.$current_php_script.'">http://'.
-                $server_name.$site_dir.$current_php_script.'</a>';
+            exec('C:\WebServers\usr\local\mysql-5.5\bin\mysql --user=' .
+                    $user_name . ' --password=' . $password .
+                    ' --host=' . $server_name . ' --database=' .
+                    $database . ' < dz9.sql', $output, $return);
+            if ($return) {
+                throw new Exception("Unable to restore dump with exit code: $return");
+            }
+            //  //exec('calc',$output,$return);
+            
+        } else if (PHP_OS == 'Linux') {
 
+            exec('mysql --user=' . $user_name . ' --password=' . $password .
+                    ' --host=' . $server_name . ' ' . $database . ' < dz9.sql', $output, $return);
+
+            if (0) {
+                echo '<br>$return=' . $return;
+            }
+
+            if (0) {
+                echo '<br>$password=' . $password;
+            }
+
+            if ($return) {
+                throw new Exception("Unable to restore dump with exit code: $return");
+            }
+        }
+        
+        //echo 'Дамп восстановлен. <a href="./'. $current_php_script . '"visit page</a>';
+        echo 'Дамп восстановлен. <a href="./dz15.php">visit page</a>';
 
 
         mysql_close($conn);

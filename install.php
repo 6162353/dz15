@@ -69,12 +69,11 @@ if (count($_POST)) {
     if ($server_name != '' and $user_name != '' and $database != '') { 
     
         // Очищение БД данной пользователем
-
-        $conn = mysql_connect($server_name, $user_name, $password)
-                or die("Невозможно установить соединение: " . mysql_error());
-        mysql_select_db($database) or die('Проблемы с указанной базой данных: ' . mysql_error());
+      
+        $conn = mysqli_connect($server_name, $user_name, $password, $database)
+                or die("Невозможно установить соединение: " . mysqli_error($conn));
         $query = 'show tables;';
-        $result_query = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
+        $result_query = mysqli_query($conn,$query) or die('Запрос не удался: ' . mysql_error());
         if (!$debug) {
             echo '<p>$result_query= <br>';
             var_dump($result_query);
@@ -83,7 +82,7 @@ if (count($_POST)) {
             // $result_query=resource(3, mysql result)
         }
 
-        while ($result = mysql_fetch_row($result_query)) {
+        while ($result = mysqli_fetch_row($result_query)) {
 
             if (!$debug) {
                 echo '<p>$result= <br>';
@@ -148,13 +147,13 @@ if (count($_POST)) {
 
 
 
-                $result_query = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
+                $result_query = mysqli_query($conn,$query) or die('Запрос не удался: ' . mysql_error());
             }
         }
 
 
         // Заливаем Базу Данных
-
+        /*
         if (PHP_OS == 'WINNT') {
 
             exec('C:\WebServers\usr\local\mysql-5.5\bin\mysql --user=' .
@@ -183,12 +182,18 @@ if (count($_POST)) {
                 throw new Exception("Unable to restore dump with exit code: $return");
             }
         }
+         * 
+         */
+        
+        $data_sql = file_get_contents('dz9.sql');
+        $result_query = mysqli_multi_query($conn,$data_sql) or die('Запрос не удался: ' . mysql_error());
+            
         
         //echo 'Дамп восстановлен. <a href="./'. $current_php_script . '"visit page</a>';
         echo 'Дамп восстановлен. <a href="./dz15.php">visit page</a>';
 
 
-        mysql_close($conn);
+        mysqli_close($conn);
     }
 }
 ?>

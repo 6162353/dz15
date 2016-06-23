@@ -8,6 +8,7 @@
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
+<link href="bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
@@ -16,31 +17,29 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="{$site_dir}main.js?5"></script>
+<script src="./main.js?5"></script>
 
 
 
 </head>
 <body style="width:500px; padding: 30px;">
 
+
+    
+
     <div id='container'></div>
+    
 {include file='table.tpl.html'}
 
 <!-- ФОРМА -->    
-{*<div class="row">
-    
-</div>
 
 
-<div class="row">
-    <div class="col-md-1"></div>
-    
-    
-<div class="col-md-8"> *}
+
 <form  class="form-horizontal" role="form" method="post">
     
     
-<div class="form-group"> 
+<div class="row">
+    <div class="col-md-6">
 <label >
    
 <input type="radio" {$checkedPrivate} value='1' name="private">Частное лицо
@@ -49,53 +48,68 @@
     <label >
         
 <input type="radio" {$checkedCompany} value='0' name="private">Компания</label> </div>
-
+    </div>
 
 <!-- ИМЯ -->
     
-<div class="form-group"> 
-<label class="col-sm2 control-label" >
+<div class="row">
+
+    <div class="col-md-6">
+<label class="control-label" >
 Ваше имя</label>
+</div>
+    <div class="col-md-6">
 <input type="text" maxlength="40" class="form-input-text" 
        value="{$seller_name}" name="seller_name" id="fld_seller_name">
+        </div>
 </div>
 
 
 
-
-<div class="form-group"> 
+<div class="row">
+    <div class="col-md-6">
     <label for="fld_email" >Электронная почта</label>
+    </div>
+    <div class="col-md-6">
     <input type="text" class="form-input-text"
            value="{$email}" name="email" id="fld_email">
-</div>
+    </div></div>
     
     
     
-<div class="form-group"> 
+<div class="row">
+    <div class="col-md-12">
     <div >
     <label class="form-label-checkbox" for="allow_mails">
 <input type="checkbox" {$checked_allow_mails} value="1" name="allow_mails" id="allow_mails" 
    class="form-input-checkbox">
 <span class="form-text-checkbox">Я не хочу получать вопросы по объявлению по e-mail</span>
     </label> </div>
-
+    </div>
 </div>
 
    <!-- ТЕЛЕФОН -->
     
-<div class="form-group"> 
+<div class="row">
+    <div class="col-md-6">
     <label id="fld_phone_label" 
 for="fld_phone" >Номер телефона</label> 
+        </div>
+    <div class="col-md-6">
 <input type="text" class="form-input-text" value="{$phone}" name="phone" id="fld_phone">
-</div>
+    </div>
+    </div>
+
     
 
 
 
 <!-- ГОРОД -->
-
-<div id="f_location_id" class="form-group"> 
+<div class="row">
+    <div class="col-md-6">
 <label for="region" class="form-label">Город</label> 
+    </div>
+    <div class="col-md-6">
 <select title="Выберите Ваш город" name="location_id" id="region" class="form-input-select"> 
 <option value="">-- Выберите город --</option>
 <option class="opt-group" disabled="disabled">-- Города --</option>
@@ -117,12 +131,16 @@ for="fld_phone" >Номер телефона</label>
 {/foreach}
 
 </select></div>
-
+</div>
 
 
 <!-- МЕТРО -->
+<div class="row">
+    <div class="col-md-6">
+<label for="region" class="form-label">Метро</label> 
+    </div>
 
-<div id="f_metro_id" class="form-group"> 
+<div class="col-md-6">
     <select title="Выберите станцию метро" name="metro_id" id="fld_metro_id" 
     class="form-input-select"> <option value="">-- Выберите станцию метро --</option>'
 
@@ -140,16 +158,20 @@ for="fld_phone" >Номер телефона</label>
 </option>    
 {/foreach}
 
-</select> </div>
-
+</select> 
+</div>
+</div>
 
 
 
 
 <!-- КАТЕГОРИЯ -->
 
-<div class="form-group"> 
+<div class="row">
+    <div class="col-md-6">
 <label for="fld_category_id" class="form-label">Категория</label> 
+    </div>
+    <div class="col-md-6">
 <select title="Выберите категорию объявления" name="category_id" 
 id="fld_category_id" class="form-input-select">
 <option value="">-- Выберите категорию --</option>
@@ -172,59 +194,70 @@ id="fld_category_id" class="form-input-select">
 
 {/foreach}
 
-</select> </div>
+</select> </div></div>
 
 
 
 
 
 <!-- НАЗВАНИЕ ОБЪЯВЛЕНИЯ -->
-
-<div id="f_title" class="form-group"> 
-<label for="fld_title" >Название объявления</label> 
+<div class="row">
+<div class="col-md-6">
+    <label for="fld_title" >Название объявления</label> </div>
+    <div class="col-md-6">
 <input type="text" maxlength="50" class="form-input-text-long" 
-value="{$title}" name="title" id="fld_title"> </div>
+       value="{$title}" name="title" id="fld_title"> </div></div>
 
-
+</div>
 
 
 
 
 <!-- ОПИСАНИЕ ОБЪЯВЛЕНИЯ -->
 
-<div class="form-group"> 
+<div class="row">
+    <div class="col-md-6">
 <label for="fld_description" class="form-label" id="js-description-label">Описание объявления</label>
+    </div>
+    <div class="col-md-6">
 <textarea maxlength="3000" name="description" 
           id="fld_description" class="form-input-textarea">{$description}</textarea> </div>
 
-          
+</div> 
           
         
           
 <!-- ЦЕНА ОБЪЯВЛЕНИЯ -->
 
-<div id="price_rw" class="form-group"> 
+<div class="row">
+    <div class="col-md-6">
 <label id="price_lbl" for="fld_price" class="form-label">Цена</label> 
+    </div>
+    <div class="col-md-6">
 <input type="text" maxlength="9" class="form-input-text-short" value="{$price}" 
 name="price" id="fld_price">&nbsp;<span id="fld_price_title">руб.</span> 
 <a class="link_plain grey right_price c-2 icon-link" id="js-price-link" 
    href="/info/pravilnye_ceny?plain"><span>Правильно указывайте цену</span></a> 
-</div>
+    </div></div>
 
 
 
 <!-- КНОПКИ  -->
+
     <div class="form-group" id="js_additem_form_submit">
         <div class="vas-submit-button pull-left"> <span class="vas-submit-border"></span> 
         <span class="vas-submit-triangle"></span> 
 
             {if $post_edit}
-
+<div class="row">                
+<div class="col-md-8">
 <input type="submit" value="Сохранить объявление" id="form_submit" name="form" 
 class="vas-submit-input">
+            </div>
+ <div class="col-md-4">               
 <input type="submit" value="Назад" id="form_submit" name="form" class="vas-submit-input">
 </div>
-
+</div>
 {else}
 
     <input type="submit" value="Добавить" id="form_submit" name="main_form" 
@@ -234,7 +267,7 @@ class="vas-submit-input">
         {/if}
         
         </div>
-    </div>
+</div></div>
 </form>
 
 

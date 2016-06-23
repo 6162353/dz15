@@ -25,7 +25,7 @@ $( document ).ready(function() {
 	
     console.log( "ready!" );
     //$('h2').css('color', 'red');
-    $( '.glyphicon-remove-circle' ).on('click', function () {
+    $( '#ads-table' ).on('click','.glyphicon-remove-circle', function () {
 
     	var tr = $(this).closest('tr');
     	console.log(tr);
